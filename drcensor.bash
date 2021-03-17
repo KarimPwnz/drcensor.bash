@@ -67,13 +67,13 @@ if [[ -n $cloudflare_DNS ]]; then
     # Check HTTP blocking
     print_step "Checking HTTP (with Cloudflare's DoH)"
     echo "curl -s -v -m $timeout --resolve $domain:80:$cloudflare_DNS http://$domain"
-    curl -s -v -m $timeout --resolve "$domain:80:$cloudflare_DNS" "http://$domain"
+    curl -s -v -m $timeout --resolve "$domain:80:$cloudflare_DNS" "http://$domain" 2>&1
     [[ $? -ne 0 ]] && print_error "HTTP request failed"
 
     # Check HTTPS blocking
     print_step "Checking HTTPS (with Cloudflare's DoH)"
     echo "curl -s -v -m $timeout --resolve $domain:443:$cloudflare_DNS https://$domain"
-    curl -s -v -m $timeout --resolve "$domain:443:$cloudflare_DNS" "https://$domain"
+    curl -s -v -m $timeout --resolve "$domain:443:$cloudflare_DNS" "https://$domain" 2>&1
     [[ $? -ne 0 ]] && print_error "HTTPS request failed"
 else
     print_error "https://cloudflare-dns.com is dead/blocked?"
