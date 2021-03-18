@@ -1,4 +1,4 @@
-# DrCensor.bash
+# drcensor.bash
 
 ## Steps to run
 
