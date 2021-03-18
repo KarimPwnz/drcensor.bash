@@ -78,3 +78,13 @@ if [[ -n $cloudflare_DNS ]]; then
 else
     print_error "https://cloudflare-dns.com is dead/blocked?"
 fi
+
+# Check SNI
+print_step "Connecting to google.com with input domain as SNI"
+if curl https://google.com &>/dev/null; then
+    echo "curl -k -H 'Host: google.com' --connect-to ':443:google.com:443' -s -v -m $timeout https://$domain"
+    curl -k -H 'Host: google.com' --connect-to ':443:google.com:443' -s -v -m $timeout "https://$domain" 2>&1
+    [[ $? -ne 0 ]] && print_error "SNI blocked"
+else
+    print_error "https://google.com is dead/blocked?"
+fi
