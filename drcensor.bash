@@ -57,13 +57,11 @@ else
     print_error "Cloudflare's DNS resolver dead/blocked?"
 fi
 
-# Do DoH resolution (using regex because jq may not be available)
+# Do DoH resolution
 cloudflare_DNS="$(curl -s -H 'accept: application/dns-json' "https://cloudflare-dns.com/dns-query?name=$domain&type=A")"
-[[ "$cloudflare_DNS" =~ \"data\":\"([0-9\.]+)\" ]]
-cloudflare_DNS="${BASH_REMATCH[1]}"
-
-# Check if Cloudflare DoH record is not set or null (needed for next steps)
-if [[ -n $cloudflare_DNS ]]; then
+# Match Cloudflare DoH record (using regex because jq may not be available)
+if [[ "$cloudflare_DNS" =~ \"data\":\"([0-9\.]+)\" ]]; then
+    cloudflare_DNS="${BASH_REMATCH[1]}"
     # Check HTTP blocking
     print_step "Checking HTTP (with Cloudflare's DoH)"
     echo "curl -s -v -m $timeout --resolve $domain:80:$cloudflare_DNS http://$domain"
