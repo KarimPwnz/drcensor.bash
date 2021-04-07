@@ -1,5 +1,5 @@
 #!/bin/bash
-# ./drcensor.bash DOMAIN OPTIONAL_TIMEOUT
+# ./drcensor.bash DOMAIN [OPTIONAL_TIMEOUT]
 # by Karim Rahal
 
 # Colors
